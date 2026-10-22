@@ -99,6 +99,25 @@ function applyFilters() {
 async function loadJobs() {
   const container = document.getElementById("job-list");
   
+  try {
+    const response = await fetch("data/jobs.json");
+    if (!response.ok) throw new Error("Could not load jobs");
+    allJobs = await response.json();
+    applyFilters();
+    console.log("Jobs loaded successfully from data/jobs.json");
+  } catch (err) {
+    console.error(err);
+    if (container) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>Could not load jobs</h3>
+          <p>Check that data/jobs.json exists.</p>
+        </div>`;
+    }
+  }
+}
+  const container = document.getElementById("job-list");
+  
   // Try 1: Static file (works perfectly on Vercel)
   try {
     const response = await fetch("data/jobs.json");
@@ -215,6 +234,20 @@ async function submitApplication(e) {
   const form = e.target;
   const successEl = document.getElementById("apply-success");
   const errorEl = document.getElementById("apply-error");
+  const name = document.getElementById("name").value;
+
+  successEl.style.display = "none";
+  errorEl.style.display = "none";
+
+  // Demo success message (no server needed)
+  successEl.textContent = `Thank you ${name}! Your application has been received. The employer will be notified. (Demo mode – no real email sent)`;
+  successEl.style.display = "block";
+  form.reset();
+}  e.preventDefault();
+
+  const form = e.target;
+  const successEl = document.getElementById("apply-success");
+  const errorEl = document.getElementById("apply-error");
   successEl.style.display = "none";
   errorEl.style.display = "none";
 
@@ -243,7 +276,20 @@ async function submitApplication(e) {
 
 // ---------- Post a new job page ----------
 function initPostPage() {
-  document.getElementById("post-form").addEventListener("submit", async function(e) {
+  document.getElementById("post-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const successEl = document.getElementById("post-success");
+    const errorEl = document.getElementById("post-error");
+    successEl.style.display = "none";
+    errorEl.style.display = "none";
+
+    // Demo success
+    successEl.textContent = "Job posted successfully! (Demo mode – on the live site this is simulated. Edit data/jobs.json and push to GitHub to add real jobs permanently.)";
+    successEl.style.display = "block";
+    e.target.reset();
+  });
+}  document.getElementById("post-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
     const successEl = document.getElementById("post-success");
