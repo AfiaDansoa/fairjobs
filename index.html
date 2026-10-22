@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FairJobs – Transparent Job Listings</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">FairJobs</div>
+    <nav>
+      <a href="index.html">Jobs</a>
+      <a href="post.html">Post a Job</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Find a fair job</h1>
+    <p class="subtitle">Every listing shows salary, remote status and real dates. No ghost jobs.</p>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-row">
+        <div>
+          <label for="search">Keyword</label>
+          <input type="text" id="search" placeholder="Title, company or skill...">
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <input type="text" id="location" placeholder="City or Remote">
+        </div>
+      </div>
+      <div class="filter-row">
+        <div>
+          <label for="minSalary">Min Salary (USD)</label>
+          <input type="number" id="minSalary" placeholder="e.g. 50000" min="0">
+        </div>
+        <div>
+          <label for="remote">Remote only</label>
+          <select id="remote">
+            <option value="">Any</option>
+            <option value="yes">Remote only</option>
+            <option value="hybrid">Hybrid or Remote</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job list will be filled by JavaScript -->
+    <div id="job-list">
+      <p>Loading jobs...</p>
+    </div>
+  </div>
+
+  <footer>
+    FairJobs MVP – Built with simple HTML, CSS, JS & PHP for learning.
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Start the listings page
+    document.addEventListener('DOMContentLoaded', initListingsPage);
+  </script>
+</body>
+</html>
