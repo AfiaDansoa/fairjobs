@@ -95,7 +95,41 @@ function applyFilters() {
 }
 
 // ---------- Load jobs from PHP API ----------
+// ---------- Load jobs (tries static JSON first, then PHP) ----------
 async function loadJobs() {
+  const container = document.getElementById("job-list");
+  
+  // Try 1: Static file (works perfectly on Vercel)
+  try {
+    const response = await fetch("data/jobs.json");
+    if (response.ok) {
+      allJobs = await response.json();
+      applyFilters();
+      console.log("Loaded jobs from static JSON");
+      return;
+    }
+  } catch (err) {
+    console.log("Static JSON failed, trying PHP...");
+  }
+
+  // Try 2: PHP API
+  try {
+    const response = await fetch("api/jobs.php");
+    if (!response.ok) throw new Error("Could not load jobs from PHP");
+    allJobs = await response.json();
+    applyFilters();
+    console.log("Loaded jobs from PHP");
+  } catch (err) {
+    console.error(err);
+    if (container) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>Could not load jobs</h3>
+          <p>Please check the browser console (F12) or try again later.</p>
+        </div>`;
+    }
+  }
+}
   try {
     const response = await fetch("api/jobs.php");
     if (!response.ok) throw new Error("Could not load jobs");
